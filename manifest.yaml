@@ -1,0 +1,112 @@
+namespace: /gitlab
+
+metadata:
+  website: https://www.gitlab.com/
+  name: Gitlab CE
+  icon: https://assets.monk.io/icons/gitlab-logo-gray-stacked-rgb.png
+  publisher: monk.io
+  description: GitLab Community Edition docker image based on the Omnibus package
+  source: https://github.com/gitlabhq/gitlabhq
+
+server:
+  defines: runnable
+
+  # volumes:
+  #   defines: volumes
+  #   gitlab-data:
+  #     size: 200
+  #     kind: SSD
+  #     path: <- `${monk-volume-path}/gitlab-data`
+  #     backup:
+  #       rotation-days: 5
+  #       every: 1
+  #       kind: day
+  #       start-time: 03:00
+  #       start-day: MONDAY
+
+  variables:
+    your-external-ip:
+      value: <- ip-address-public
+      type: string
+
+    local-data-volume:
+      value: <- `${monk-volume-path}/gitlab-data/data`
+      type: string
+
+    local-logs-volume:
+      value: <- `${monk-volume-path}/gitlab-data/logs`
+      type: string
+
+    local-config-volume:
+      type: string
+      value: <- `${monk-volume-path}/gitlab-data/config`
+
+    ssh-port:
+      value: 22
+      type: string
+
+    gitlab-url:
+      type: string
+      # value: <- `https://git.monk.com`
+      value: <- `http://${your-external-ip}`
+
+    gitlab-omnibus-config:
+      type: string
+      value: |
+        gitlab_rails['gitlab_default_theme'] = 2
+        gitlab_rails['initial_root_password'] = ENV['gitlab-root-password']
+        gitlab_rails['gitlab_shell_ssh_port'] = ENV['ssh-port'].to_i
+        external_url ENV['gitlab-url']
+
+    gitlab-root-password:
+      type: string
+      value: z123z123
+
+  containers:
+    app:
+      image: docker.io/gitlab/gitlab-ce
+      paths:
+      - <- `${local-data-volume}:/var/opt/gitlab`
+      - <- `${local-logs-volume}:/var/log/gitlab`
+      - <- `${local-config-volume}:/etc/gitlab`
+      image-tag: latest
+      environment:
+      - <- `gitlab-root-password=${gitlab-root-password}`
+      - <- `ssh-port=${ssh-port}`
+      - <- `gitlab-url=${gitlab-url}`
+      - <- `GITLAB_OMNIBUS_CONFIG=${gitlab-omnibus-config}`
+
+      ports:
+      - <- `${ssh-port}:22`
+      - 80:80
+      - 443:443
+      - 5050:5050
+
+runner:
+  defines: runnable
+
+  containers:
+    runner:
+      image: docker.io/gitlab/gitlab-runner
+      image-tag: alpine
+
+  actions:
+    register:
+      arguments:
+        token:
+          description: Gitlab registration token
+          type: string
+        url:
+          description: Gitlab url
+          type: string
+      code: exec("runner", "/bin/bash", "-c", `gitlab-runner register --non-interactive
+        --url ${args["url"]} --registration-token ${args["token"]}
+        --executor "docker" --docker-image alpine:latest --description "docker-runner"
+        --tag-list "docker,monk" --run-untagged="true" --locked="false" --access-level="not_protected"`)
+      description: Register the runner with gitlab
+
+stack:
+  defines: process-group
+  runnable-list:
+    - gitlab/server
+    - gitlab/runner

@@ -1,0 +1,20 @@
+namespace: /gitlab
+
+runner-1:
+  defines: runnable
+  inherits: /gitlab/runner
+
+runner-2:
+  defines: runnable
+  inherits: /gitlab/runner
+
+runner-3:
+  defines: runnable
+  inherits: /gitlab/runner
+
+runner-stack:
+  defines: process-group
+  runnable-list:
+    - /gitlab/runner-1
+    - /gitlab/runner-2
+    - /gitlab/runner-3
