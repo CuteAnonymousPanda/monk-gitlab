@@ -1,0 +1,2 @@
+REPO monk-gitlab
+LOAD manifest.yaml runner-stack.yaml
