@@ -1,8 +1,9 @@
 Gitlab meets Monk.io
 ===
 
-This repository contains Monk.io template to deploy Gitlab and its runners either locally or on cloud of your choice (AWS, GCP, Azure, Digital Ocean).  
+This repository contains Monk.io template to deploy Gitlab and its runners either locally or on cloud of your choice (AWS, GCP, Azure, Digital Ocean).
 
+- [Gitlab meets Monk.io](#gitlab-meets-monkio)
   - [Prerequisites](#prerequisites)
     - [Make sure monkd is running.](#make-sure-monkd-is-running)
     - [Clone Repository](#clone-repository)
@@ -12,6 +13,7 @@ This repository contains Monk.io template to deploy Gitlab and its runners eithe
   - [Variables](#variables)
   - [Register a runner with your instance](#register-a-runner-with-your-instance)
   - [Stop, remove and clean up workloads and templates](#stop-remove-and-clean-up-workloads-and-templates)
+  - [Persistency](#persistency)
   - [Create your own template](#create-your-own-template)
 
 ## Prerequisites
@@ -32,14 +34,14 @@ not connected to cluster
 ### Clone Repository
 
 ``` bash
-$ git clone git@github.com:CuteAnonymousPanda/monk-gitlab.git
+$ git clone git@github.com:monk-io/monk-gitlab.git
 ```
 
 ### Load Template
 
 ``` bash
 $ cd monk-gitlab
-$ monk load manifest.yaml
+$ monk load MANIFEST
 ```
 
 ### Verify if it's loaded correctly
@@ -48,10 +50,10 @@ $ monk load manifest.yaml
 $ monk list -l gitlab
 
 ✔ Got the list
-Type      Template       Repository  Version  Tags  
-runnable  gitlab/runner  local       -        -     
-runnable  gitlab/server  local       -        -     
-group     gitlab/stack   local       -        -     
+Type      Template       Repository  Version  Tags
+runnable  gitlab/runner  local       -        -
+runnable  gitlab/server  local       -        -
+group     gitlab/stack   local       -        -
 ```
 
 ## Deploy Stack
@@ -69,21 +71,21 @@ $ monk run gitlab/stack
 ✔ New container local-46a6f63de3a71470b28f440e45-local-gitlab-server-app created DONE
 ✔ Started local/gitlab/stack
 
-🔩 templates/local/gitlab/stack             
+🔩 templates/local/gitlab/stack
  └─🧊 Peer QmR5a3SXMKwhYHfcZjpVFWycrcy2TmUGAuEosFdsGL5oVn
-    ├─🔩 templates/local/gitlab/runner 
-    │  └─📦 local-c616fa5ce83ef91e4b43cb5f27-local-gitlab-runner-runner 
+    ├─🔩 templates/local/gitlab/runner
+    │  └─📦 local-c616fa5ce83ef91e4b43cb5f27-local-gitlab-runner-runner
     │     └─🧩 docker.io/gitlab/gitlab-runner:alpine
-    └─🔩 templates/local/gitlab/server 
-       └─📦 local-46a6f63de3a71470b28f440e45-local-gitlab-server-app 
-          ├─🧩 docker.io/gitlab/gitlab-ce:latest                 
+    └─🔩 templates/local/gitlab/server
+       └─📦 local-46a6f63de3a71470b28f440e45-local-gitlab-server-app
+          ├─🧩 docker.io/gitlab/gitlab-ce:latest
           ├─💾 /var/lib/monkd/volumes/gitlab-data/logs -> /var/log/gitlab
           ├─💾 /var/lib/monkd/volumes/gitlab-data/data -> /var/opt/gitlab
           ├─💾 /var/lib/monkd/volumes/gitlab-data/config -> /etc/gitlab
-          ├─🔌 open 1.1.1.2:80 -> 80              
-          ├─🔌 open 1.1.1.2:23 -> 22              
-          ├─🔌 open 1.1.1.2:443 -> 443            
-          └─🔌 open 1.1.1.2:5050 -> 5050          
+          ├─🔌 open 1.1.1.2:80 -> 80
+          ├─🔌 open 1.1.1.2:23 -> 22
+          ├─🔌 open 1.1.1.2:443 -> 443
+          └─🔌 open 1.1.1.2:5050 -> 5050
 
 💡 You can inspect and manage your above stack with these commands:
         monk logs (-f) local/gitlab/stack - Inspect logs
@@ -94,15 +96,15 @@ $ monk run gitlab/stack
 
 ## Variables
 
-The variables are stored in `manifest.yaml` file.  
+The variables are stored in `manifest.yaml` file.
 You can quickly setup by editing the values there.
 
-| Variable                     | Description                                 | Default                    |
-|------------------------------|---------------------------------------------|----------------------------|
-| ssh-port                     | Port to listen for incoming ssh connections | 22                         |
-| gitlab-url                   | Your Gitlab instance address                | http://${your-external-ip} |
-| gitlab-root-password         | Default root password                       | z123z123                   |
-  
+| Variable             | Description                                 | Default                                   |
+| -------------------- | ------------------------------------------- | ----------------------------------------- |
+| ssh-port             | Port to listen for incoming ssh connections | 22                                        |
+| gitlab-url           | Your Gitlab instance address                | <- "http://" ip-address-public concat-all |
+| gitlab-root-password | Default root password                       | z123z123                                  |
+
 
 ## Register a runner with your instance
 
@@ -122,13 +124,13 @@ monk purge -x gitlab/server gitlab/runner
 ```
 
 ## Persistency
-If you're using any of the clouds available via Monk.you can use volume definition to spin a disk block device to make your Gitlab instance independent on the node it's running on.  
+If you're using any of the clouds available via Monk.you can use volume definition to spin a disk block device to make your Gitlab instance independent on the node it's running on.
 To do simply uncomment the `volume` block in `manifest.yaml`
 
 ## Create your own template
 
-You can create your own template and inherit the defaults and add more changes that are needed by you. For example increase amount of workers.  
-This is an example manifest that you could use:  
+You can create your own template and inherit the defaults and add more changes that are needed by you. For example increase amount of workers.
+This is an example manifest that you could use:
 
 ``` yaml
 namespace: /gitlab

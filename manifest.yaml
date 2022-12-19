@@ -25,56 +25,38 @@ server:
   #       start-day: MONDAY
 
   variables:
-    your-external-ip:
-      value: <- ip-address-public
-      type: string
-
-    local-data-volume:
-      value: <- `${monk-volume-path}/gitlab-data/data`
-      type: string
-
-    local-logs-volume:
-      value: <- `${monk-volume-path}/gitlab-data/logs`
-      type: string
-
-    local-config-volume:
-      type: string
-      value: <- `${monk-volume-path}/gitlab-data/config`
-
     ssh-port:
-      value: 22
+      value: 23
       type: string
+      env: sshPort
 
     gitlab-url:
       type: string
-      # value: <- `https://git.monk.com`
-      value: <- `http://${your-external-ip}`
+      value: <- "http://" ip-address-public concat-all
+      env: gitlabUrl
+
+    gitlab-root-password:
+      type: string
+      value: z123z123
+      env: gitlabRootPassword
 
     gitlab-omnibus-config:
       type: string
       value: |
         gitlab_rails['gitlab_default_theme'] = 2
-        gitlab_rails['initial_root_password'] = ENV['gitlab-root-password']
-        gitlab_rails['gitlab_shell_ssh_port'] = ENV['ssh-port'].to_i
-        external_url ENV['gitlab-url']
-
-    gitlab-root-password:
-      type: string
-      value: z123z123
+        gitlab_rails['initial_root_password'] = ENV['gitlabRootPassword']
+        gitlab_rails['gitlab_shell_ssh_port'] = ENV['sshPort'].to_i
+        external_url ENV['gitlabUrl']
+      env: GITLAB_OMNIBUS_CONFIG
 
   containers:
     app:
       image: docker.io/gitlab/gitlab-ce
       paths:
-      - <- `${local-data-volume}:/var/opt/gitlab`
-      - <- `${local-logs-volume}:/var/log/gitlab`
-      - <- `${local-config-volume}:/etc/gitlab`
+      - <- `${monk-volume-path}/gitlab-data/data:/var/opt/gitlab`
+      - <- `${monk-volume-path}/gitlab-data/logs:/var/log/gitlab`
+      - <- `${monk-volume-path}/gitlab-data/config:/etc/gitlab`
       image-tag: latest
-      environment:
-      - <- `gitlab-root-password=${gitlab-root-password}`
-      - <- `ssh-port=${ssh-port}`
-      - <- `gitlab-url=${gitlab-url}`
-      - <- `GITLAB_OMNIBUS_CONFIG=${gitlab-omnibus-config}`
 
       ports:
       - <- `${ssh-port}:22`
