@@ -1,15 +1,21 @@
 namespace: /gitlab
 
-metadata:
-  website: https://www.gitlab.com/
-  name: Gitlab CE
-  icon: https://assets.monk.io/icons/gitlab-logo-gray-stacked-rgb.png
-  publisher: monk.io
-  description: GitLab Community Edition docker image based on the Omnibus package
-  source: https://github.com/gitlabhq/gitlabhq
-
 server:
   defines: runnable
+
+  metadata:
+    website: https://www.gitlab.com/
+    name: Gitlab CE
+    icon: https://assets.monk.io/icons/gitlab-logo-gray-stacked-rgb.png
+    publisher: monk.io
+    description: |
+      GitLab is a web-based Git repository manager that provides source code management, continuous integration, and continuous deployment (CI/CD) capabilities.
+
+      It allows developers to collaborate on code in a single, centralized location and includes features such as issue tracking, code review, and version control.
+
+      GitLab offers a wide range of integrations with other development tools and platforms, making it a powerful tool for software development teams.
+    source: https://github.com/gitlabhq/gitlabhq
+    tags: git, gitlab, source control, repository, runner, server
 
   # volumes:
   #   defines: volumes
@@ -67,6 +73,19 @@ server:
 runner:
   defines: runnable
 
+  metadata:
+    website: https://www.gitlab.com/
+    name: Gitlab CE
+    icon: https://assets.monk.io/icons/gitlab-logo-gray-stacked-rgb.png
+    publisher: monk.io
+    description: |
+      GitLab is a web-based Git repository manager that provides source code management, continuous integration, and continuous deployment (CI/CD) capabilities.
+
+      It allows developers to collaborate on code in a single, centralized location and includes features such as issue tracking, code review, and version control.
+
+      GitLab offers a wide range of integrations with other development tools and platforms, making it a powerful tool for software development teams.    source: https://github.com/gitlabhq/gitlabhq
+    tags: git, gitlab, source control, repository, runner
+
   containers:
     runner:
       image: docker.io/gitlab/gitlab-runner
@@ -89,6 +108,21 @@ runner:
 
 stack:
   defines: process-group
+
+  metadata:
+    website: https://www.gitlab.com/
+    name: Gitlab CE
+    icon: https://assets.monk.io/icons/gitlab-logo-gray-stacked-rgb.png
+    publisher: monk.io
+    description: |
+      GitLab is a web-based Git repository manager that provides source code management, continuous integration, and continuous deployment (CI/CD) capabilities.
+
+      It allows developers to collaborate on code in a single, centralized location and includes features such as issue tracking, code review, and version control.
+
+      GitLab offers a wide range of integrations with other development tools and platforms, making it a powerful tool for software development teams.
+    source: https://github.com/gitlabhq/gitlabhq
+    tags: git, gitlab, source control, repository, runner, server
+
   runnable-list:
     - gitlab/server
     - gitlab/runner

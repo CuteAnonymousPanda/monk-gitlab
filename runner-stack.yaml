@@ -4,16 +4,40 @@ runner-1:
   defines: runnable
   inherits: /gitlab/runner
 
+  metadata:
+    private: true
+
 runner-2:
   defines: runnable
   inherits: /gitlab/runner
+
+  metadata:
+    private: true
 
 runner-3:
   defines: runnable
   inherits: /gitlab/runner
 
+  metadata:
+    private: true
+
 runner-stack:
   defines: process-group
+
+  metadata:
+    website: https://www.gitlab.com/
+    name: Gitlab CE
+    icon: https://assets.monk.io/icons/gitlab-logo-gray-stacked-rgb.png
+    publisher: monk.io
+    description: |
+      GitLab is a web-based Git repository manager that provides source code management, continuous integration, and continuous deployment (CI/CD) capabilities.
+
+      It allows developers to collaborate on code in a single, centralized location and includes features such as issue tracking, code review, and version control.
+
+      GitLab offers a wide range of integrations with other development tools and platforms, making it a powerful tool for software development teams.
+    source: https://github.com/gitlabhq/gitlabhq
+    tags: git, gitlab, source control, repository, runner
+
   runnable-list:
     - /gitlab/runner-1
     - /gitlab/runner-2
