@@ -1,5 +1,5 @@
 Gitlab meets Monk.io
-===
+====================
 
 This repository contains Monk.io template to deploy Gitlab and its runners either locally or on cloud of your choice (AWS, GCP, Azure, Digital Ocean).
 
@@ -17,6 +17,7 @@ This repository contains Monk.io template to deploy Gitlab and its runners eithe
   - [Create your own template](#create-your-own-template)
 
 ## Prerequisites
+
 - [Install Monk](https://docs.monk.io/docs/get-monk)
 - [Register and Login Monk](https://docs.monk.io/docs/acc-and-auth)
 - [Add Cloud Provider](https://docs.monk.io/docs/cloud-provider)
@@ -24,7 +25,7 @@ This repository contains Monk.io template to deploy Gitlab and its runners eithe
 
 ### Make sure monkd is running.
 
-``` bash
+```bash
 $ monk status
 daemon: ready
 auth: logged in
@@ -33,13 +34,13 @@ not connected to cluster
 
 ### Clone Repository
 
-``` bash
+```bash
 $ git clone git@github.com:monk-io/monk-gitlab.git
 ```
 
 ### Load Template
 
-``` bash
+```bash
 $ cd monk-gitlab
 $ monk load MANIFEST
 ```
@@ -105,14 +106,14 @@ You can quickly setup by editing the values there.
 | gitlab-url           | Your Gitlab instance address                | <- "http://" ip-address-public concat-all |
 | gitlab-root-password | Default root password                       | z123z123                                  |
 
-
 ## Register a runner with your instance
 
 To register a runner please:
+
 1) Obtain a runner registration token from UI Admin/Runner section
 2) Run following command with appropriate parameters:
 
-``` bash
+```bash
 monk do gitlab/runner/register token=<Token> url=<Your_Gitlab_URL>
 ```
 
@@ -124,6 +125,7 @@ monk purge -x gitlab/server gitlab/runner
 ```
 
 ## Persistency
+
 If you're using any of the clouds available via Monk.you can use volume definition to spin a disk block device to make your Gitlab instance independent on the node it's running on.
 To do simply uncomment the `volume` block in `manifest.yaml`
 
@@ -132,7 +134,7 @@ To do simply uncomment the `volume` block in `manifest.yaml`
 You can create your own template and inherit the defaults and add more changes that are needed by you. For example increase amount of workers.
 This is an example manifest that you could use:
 
-``` yaml
+```yaml
 namespace: /gitlab
 
 runner-1:
