@@ -1,11 +1,10 @@
-Gitlab meets Monk.io
-====================
+# Gitlab meets Monk.io
 
 This repository contains Monk.io template to deploy Gitlab and its runners either locally or on cloud of your choice (AWS, GCP, Azure, Digital Ocean).
 
 - [Gitlab meets Monk.io](#gitlab-meets-monkio)
   - [Prerequisites](#prerequisites)
-    - [Make sure monkd is running.](#make-sure-monkd-is-running)
+    - [Make sure monkd is running](#make-sure-monkd-is-running)
     - [Clone Repository](#clone-repository)
     - [Load Template](#load-template)
     - [Verify if it's loaded correctly](#verify-if-its-loaded-correctly)
@@ -23,7 +22,7 @@ This repository contains Monk.io template to deploy Gitlab and its runners eithe
 - [Add Cloud Provider](https://docs.monk.io/docs/cloud-provider)
 - [Add Instance](https://docs.monk.io/docs/multi-cloud)
 
-### Make sure monkd is running.
+### Make sure monkd is running
 
 ```bash
 $ monk status
@@ -35,14 +34,14 @@ not connected to cluster
 ### Clone Repository
 
 ```bash
-$ git clone git@github.com:monk-io/monk-gitlab.git
+git clone git@github.com:monk-io/monk-gitlab.git
 ```
 
 ### Load Template
 
 ```bash
-$ cd monk-gitlab
-$ monk load MANIFEST
+cd monk-gitlab
+monk load MANIFEST
 ```
 
 ### Verify if it's loaded correctly

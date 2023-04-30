@@ -14,19 +14,6 @@ server:
       GitLab offers a wide range of integrations with other development tools and platforms, making it a powerful tool for software development teams.
     source: https://github.com/gitlabhq/gitlabhq
     tags: git, gitlab, source control, repository, runner, server
-
-  # volumes:
-  #   defines: volumes
-  #   gitlab-data:
-  #     size: 200
-  #     kind: SSD
-  #     path: <- `${monk-volume-path}/gitlab-data`
-  #     backup:
-  #       rotation-days: 5
-  #       every: 1
-  #       kind: day
-  #       start-time: 03:00
-  #       start-day: MONDAY
   variables:
     ssh-port:
       value: 23
@@ -56,11 +43,26 @@ server:
         - <- `${monk-volume-path}/gitlab-data/logs:/var/log/gitlab`
         - <- `${monk-volume-path}/gitlab-data/config:/etc/gitlab`
       image-tag: latest
-      ports:
-        - <- `${ssh-port}:22`
-        - 80:80
-        - 443:443
-        - 5050:5050
+  services:
+    git-ssh:
+      container: app
+      port: 22
+      protocol: tcp
+      host-port: <- $ssh-port
+    http:
+      container: app
+      port: 80
+      protocol: tcp
+    https:
+      container: app
+      port: 443
+      protocol: tcp
+      host-port: 443
+    registry:
+      container: app
+      port: 5050
+      protocol: tcp
+      host-port: 5050
 
 runner:
   defines: runnable
