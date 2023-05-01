@@ -67,11 +67,7 @@ server:
       container: app
       port: 80
       protocol: tcp
-    https:
-      container: app
-      port: 443
-      protocol: tcp
-      host-port: 443
+      host-port: 80
     registry:
       container: app
       port: 5050
