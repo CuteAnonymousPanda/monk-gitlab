@@ -10,22 +10,36 @@ server:
     publisher: monk.io
     description: |
       GitLab is a web-based Git repository manager that provides source code management, continuous integration, and continuous deployment (CI/CD) capabilities.
+
       It allows developers to collaborate on code in a single, centralized location and includes features such as issue tracking, code review, and version control.
+
       GitLab offers a wide range of integrations with other development tools and platforms, making it a powerful tool for software development teams.
+
+      ---
+
+      Notes:
+
+      This template has available variables:
+      | Variable             | Description                                 | Default                                   |
+      | -------------------- | ------------------------------------------- | ----------------------------------------- |
+      | git-ssh-port         | Port to listen for incoming ssh connections | 23                                        |
+      | gitlab-url           | Your Gitlab instance address                | <- "http://" ip-address-public concat-all |
+      | gitlab-root-password | Default root password                       | z123z123                                  |
+
     source: https://github.com/gitlabhq/gitlabhq
     tags: git, gitlab, source control, repository, runner, server
   variables:
-    ssh-port:
+    git-ssh-port:
       value: 23
       type: string
       env: sshPort
     gitlab-url:
       type: string
-      value: <- "http://" ip-address-public concat-all
+      value: <- $gitlab-url default("http://" ip-address-public concat-all)
       env: gitlabUrl
     gitlab-root-password:
       type: string
-      value: z123z123
+      value: <- $gitlab-root-password default("z123z123")
       env: gitlabRootPassword
     gitlab-omnibus-config:
       type: string
@@ -48,7 +62,7 @@ server:
       container: app
       port: 22
       protocol: tcp
-      host-port: <- $ssh-port
+      host-port: <- $git-ssh-port
     http:
       container: app
       port: 80
@@ -73,8 +87,19 @@ runner:
     publisher: monk.io
     description: |
       GitLab is a web-based Git repository manager that provides source code management, continuous integration, and continuous deployment (CI/CD) capabilities.
+
       It allows developers to collaborate on code in a single, centralized location and includes features such as issue tracking, code review, and version control.
-      GitLab offers a wide range of integrations with other development tools and platforms, making it a powerful tool for software development teams.    source: https://github.com/gitlabhq/gitlabhq
+
+      GitLab offers a wide range of integrations with other development tools and platforms, making it a powerful tool for software development teams.
+
+      ---
+
+      Notes:
+
+      This template has available action:
+      register - Register your runner instance with your Gitlab instance
+
+    source: https://github.com/gitlabhq/gitlabhq
     tags: git, gitlab, source control, repository, runner
   containers:
     runner:
@@ -101,8 +126,25 @@ stack:
     publisher: monk.io
     description: |
       GitLab is a web-based Git repository manager that provides source code management, continuous integration, and continuous deployment (CI/CD) capabilities.
+
       It allows developers to collaborate on code in a single, centralized location and includes features such as issue tracking, code review, and version control.
+
       GitLab offers a wide range of integrations with other development tools and platforms, making it a powerful tool for software development teams.
+
+      ---
+
+      Notes:
+
+
+      This template has available variables:
+      | Variable             | Description                                 | Default                                   |
+      | -------------------- | ------------------------------------------- | ----------------------------------------- |
+      | git-ssh-port         | Port to listen for incoming ssh connections | 23                                        |
+      | gitlab-url           | Your Gitlab instance address                | <- "http://" ip-address-public concat-all |
+      | gitlab-root-password | Default root password                       | z123z123                                  |
+
+      This template has available runnner action:
+      register - Register your runner instance with your Gitlab instance
     source: https://github.com/gitlabhq/gitlabhq
     tags: git, gitlab, source control, repository, runner, server
   runnable-list:
