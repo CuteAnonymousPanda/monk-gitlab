@@ -35,7 +35,7 @@ server:
       env: gitlabUrl
     git-ssh-port:
       value: 23
-      type: string
+      type: int
       env: sshPort
     gitlab-root-password:
       type: string
