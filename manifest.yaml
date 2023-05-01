@@ -29,14 +29,14 @@ server:
     source: https://github.com/gitlabhq/gitlabhq
     tags: git, gitlab, source control, repository, runner, server
   variables:
+    gitlab-url:
+      value: <- "http://" ip-address-public concat-all
+      type: string
+      env: gitlabUrl
     git-ssh-port:
       value: 23
       type: string
       env: sshPort
-    gitlab-url:
-      type: string
-      value: <- $gitlab-url default("http://" ip-address-public concat-all)
-      env: gitlabUrl
     gitlab-root-password:
       type: string
       value: <- $gitlab-root-password default("z123z123")
