@@ -40,7 +40,7 @@ runner-stack:
       This template has available action:
       register - Register your runner instance with your Gitlab instance
     source: https://github.com/gitlabhq/gitlabhq
-    tags: git, gitlab, source control, repository, runner
+    tags: gitlab, runner, source control, repository
   runnable-list:
     - /gitlab/runner-1
     - /gitlab/runner-2
