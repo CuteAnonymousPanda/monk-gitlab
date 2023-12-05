@@ -24,7 +24,7 @@ server:
       | -------------------- | ------------------------------------------- | ----------------------------------------- |
       | git-ssh-port         | Port to listen for incoming ssh connections | 23                                        |
       | gitlab-url           | Your Gitlab instance address                | <- "http://" ip-address-public concat-all |
-      | gitlab-root-password | Default root password                       | z123z123                                  |
+      | gitlab-root-password | Default root password                       | z123z123z123                              |
 
     source: https://github.com/gitlabhq/gitlabhq
     tags: gitlab, server, runner, source control, repository
@@ -39,7 +39,7 @@ server:
       env: sshPort
     gitlab-root-password:
       type: string
-      value: <- $gitlab-root-password default("z123z123")
+      value: <- $gitlab-root-password default("z123z123z123")
       env: gitlabRootPassword
     gitlab-omnibus-config:
       type: string
@@ -137,7 +137,7 @@ stack:
       | -------------------- | ------------------------------------------- | ----------------------------------------- |
       | git-ssh-port         | Port to listen for incoming ssh connections | 23                                        |
       | gitlab-url           | Your Gitlab instance address                | <- "http://" ip-address-public concat-all |
-      | gitlab-root-password | Default root password                       | z123z123                                  |
+      | gitlab-root-password | Default root password                       | z123z123z123                              |
 
       This template has available runnner action:
       register - Register your runner instance with your Gitlab instance
